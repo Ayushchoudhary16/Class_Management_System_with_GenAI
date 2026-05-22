@@ -14,6 +14,9 @@ def create_class(db: Session, body: ClassCreate):
     faculty = db.query(Faculty).filter(Faculty.id == body.faculty_id).first()
     if not faculty:
         raise HTTPException(400, "Invalid faculty")
+    
+    if not faculty.is_approved:
+        raise HTTPException(403, "Cannot assign class: Faculty is not approved yet")
 
     new_class = Class(
         title=body.title,
@@ -88,6 +91,9 @@ def update_class(request: Request, db: Session, body: ClassCreate):
     faculty = db.query(Faculty).filter(Faculty.id == body.faculty_id).first()
     if not faculty:
         raise HTTPException(400, "Invalid faculty")
+        
+    if not faculty.is_approved:
+        raise HTTPException(403, "Cannot assign class: Faculty is not approved yet")
 
     data.title = body.title
     data.description = body.description

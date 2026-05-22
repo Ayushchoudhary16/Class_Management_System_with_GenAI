@@ -5,6 +5,8 @@ from src.batch.schemas import *
 from src.classes.model import Class
 from src.classes.schemas import *
 from src.Utills.authentication import is_authenticated
+from src.enroll.model import Enrollment
+from src.Attendence.model import Attendance
 
 
 def create_batch(db: Session, body: BatchCreate):
@@ -85,6 +87,9 @@ def delete_batch(request: Request, db: Session):
     batch = db.query(Batch).filter(Batch.id == batch_id).first()
     if not batch:
         raise HTTPException(404, "Batch not found")
+
+    db.query(Enrollment).filter(Enrollment.batch_id == batch_id).delete()
+    db.query(Attendance).filter(Attendance.batch_id == batch_id).delete()
 
     db.delete(batch)
     db.commit()

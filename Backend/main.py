@@ -19,9 +19,16 @@ Base.metadata.create_all(db_init)
 app=FastAPI()
 
 
-origins = [
-    "http://localhost:5173",  # React Vite frontend
-]
+import os
+
+origins_env = os.getenv("ALLOWED_ORIGINS")
+if origins_env:
+    origins = [o.strip() for o in origins_env.split(",") if o.strip()]
+else:
+    origins = [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ]
 
 app.add_middleware(
     CORSMiddleware,

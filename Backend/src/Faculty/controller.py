@@ -56,7 +56,7 @@ def login_faculty(body: loginSchema, db: Session):
         algorithm=ALGORITHM
     )
 
-    return {"status": "ok", "token": token}
+    return {"status": "ok", "token": token, "user": faculty}
 
 
 def get_faculty_by_id(request: Request, db: Session):

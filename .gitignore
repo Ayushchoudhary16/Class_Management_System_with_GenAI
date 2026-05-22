@@ -1,0 +1,18 @@
+# Environment files
+.env
+*.env
+Backend/.env
+Backend/src/genAI/.env
+
+# Python files
+__pycache__/
+*.pyc
+Backend/env/
+Backend/__pycache__/
+
+# Node files
+node_modules/
+dist/
+
+# Archive files
+project.tar.gz

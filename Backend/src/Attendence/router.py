@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
+from src.Utills.authentication import student_required
 from src.Utills.database import get_db
 from src.Attendence.controller import *
 from src.Attendence.schemas import *
@@ -33,3 +34,13 @@ def percentage(request: Request, db: Session = Depends(get_db)):
 @router.get("/monthly")
 def monthly(request: Request, db: Session = Depends(get_db)):
     return get_monthly_report(request, db)
+
+@router.get("/my-attendance")
+def my_attendance(
+    request: Request,
+    db: Session = Depends(get_db),
+    data = Depends(student_required)
+):
+    request.state.user = data["user"]
+
+    return get_my_attendance(request, db)

@@ -8,15 +8,15 @@ import os
 load_dotenv()
 
 
-db = SQLDatabase.from_uri(
-    "postgresql+psycopg2://postgres:Ayushsql@localhost:5433/ClassManagementSystem"
-)
+db_uri = os.getenv("DATABASE_URL", "postgresql+psycopg2://postgres:Ayushsql@localhost:5433/ClassManagementSystem")
+db = SQLDatabase.from_uri(db_uri)
 
 
 # STUDENT AI
 def generate_student_ai_chat(body):
     llm = init_chat_model(
-        model="qwen/qwen3-32b",
+        # model="qwen/qwen3-32b",
+        model="llama3-8b-8192",
         model_provider="groq",
         api_key=os.getenv("GROQ_API_KEY")
     )

@@ -25,7 +25,7 @@ export default function Classes() {
   const { data: facultyRes } = useFetch(() => facultyApi.getAll());
   // const faculty = facultyRes?.data || [];
   const faculty = Array.isArray(facultyRes?.faculties)
-    ? facultyRes.faculties
+    ? facultyRes.faculties.filter(f => f.is_approved)
     : [];
   const addModal = useDisclosure();
   const [deleteTarget, setDeleteTarget] = useState(null);

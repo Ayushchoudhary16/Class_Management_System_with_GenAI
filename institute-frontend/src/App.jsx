@@ -51,17 +51,17 @@ export default function App() {
               </ProtectedRoute>
             } />
             <Route path="/classes" element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={['admin', 'faculty']}>
                 <Layout><Classes /></Layout>
               </ProtectedRoute>
             } />
             <Route path="/batches" element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={['admin']}>
                 <Layout><Batches /></Layout>
               </ProtectedRoute>
             } />
             <Route path="/enrollment" element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={['admin']}>
                 <Layout><Enrollment /></Layout>
               </ProtectedRoute>
             } />
@@ -71,7 +71,7 @@ export default function App() {
               </ProtectedRoute>
             } />
             <Route path="/fees" element={
-              <ProtectedRoute>
+              <ProtectedRoute allowedRoles={['admin', 'student']}>
                 <Layout><Fees /></Layout>
               </ProtectedRoute>
             } />

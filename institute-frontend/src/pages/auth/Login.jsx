@@ -9,7 +9,7 @@ import { Eye, EyeOff, GraduationCap, Shield, Users } from 'lucide-react';
 
 const ROLES = [
   { value: 'admin', label: 'Admin', icon: Shield, color: 'from-purple-500 to-red-600' },
-  { value: 'student', label: 'Student', icon: GraduationCap, color: 'from-primary-500 to-blue-600' },
+  // { value: 'student', label: 'Student', icon: GraduationCap, color: 'from-primary-500 to-blue-600' },
   { value: 'faculty', label: 'Faculty', icon: Users, color: 'from-emerald-500 to-teal-600' },
 ];
 

@@ -60,7 +60,7 @@ def login_student(body: loginSchema, db: Session):
         algorithm=ALGORITHM
     )
 
-    return {"status": "ok", "token": token}
+    return {"status": "ok", "token": token, "user": student}
 
 
 
@@ -101,13 +101,35 @@ def delete_student(request: Request, db: Session):
     }
 
 
-def update_student(body: updateSchema, request: Request, db: Session):
-    student_id = request.query_params.get("student_id")
+# def update_student(body: updateSchema, request: Request, db: Session):
+#     student_id = request.query_params.get("student_id")
 
-    if not student_id:
-        raise HTTPException(400, "student_id is required")
+#     if not student_id:
+#         raise HTTPException(400, "student_id is required")
 
-    student = db.query(Student).filter(Student.id == int(student_id)).first()
+#     student = db.query(Student).filter(Student.id == int(student_id)).first()
+
+#     if not student:
+#         raise HTTPException(404, "Student not found")
+
+#     hashed_password = hash_password(body.password)
+
+#     student.name = body.name
+#     student.address = body.address
+#     student.mobile_no = body.mobile_no
+#     student.parent_mobile_no = body.parent_mobile_no
+#     student.password = hashed_password
+
+#     db.commit()
+#     db.refresh(student)
+
+#     return {
+#         "status": "ok",
+#         "student": student
+#     }
+def update_student(student_id: int, body: updateSchema, db: Session):
+
+    student = db.query(Student).filter(Student.id == student_id).first()
 
     if not student:
         raise HTTPException(404, "Student not found")
@@ -137,3 +159,21 @@ def get_all_students(db: Session):
         "count": len(students),
         "students": students
     }
+
+def get_student(request: Request, db: Session, data):
+    student_id = request.query_params.get("student_id")
+
+    if not student_id:
+        raise HTTPException(400, "student_id required")
+
+    student_id = int(student_id)
+
+    if data["role"] == "admin":
+        return get_student_by_id(request, db)
+
+    if data["role"] == "student":
+        if data["user"].id != student_id:
+            raise HTTPException(403, "You can only access your own data")
+        return get_student_by_id(request, db)
+
+    raise HTTPException(403, "Access denied")

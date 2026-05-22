@@ -1,6 +1,7 @@
 import api from './axios';
 
 export const adminApi = {
+  signup: (data) => api.post('/admin/admin_register', data),
   login: (data) => api.post('/admin/admin_login', data),
   getById: () => api.get('/admin/get_admin_by_id'),
   update: (data) => api.put('/admin/update_admin', data),

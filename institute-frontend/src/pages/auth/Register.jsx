@@ -4,19 +4,9 @@ import { motion } from 'framer-motion';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { toast } from 'react-toastify';
-import { studentApi } from '../../api/studentApi';
 import { facultyApi } from '../../api/facultyApi';
+import { adminApi } from '../../api/adminApi';
 import { Eye, EyeOff } from 'lucide-react';
-
-const studentSchema = Yup.object({
-  name: Yup.string().required('Name required'),
-  email: Yup.string().email('Invalid email').required('Email required'),
-  password: Yup.string().min(5, 'Min 5 chars').required('Password required'),
-  dob: Yup.string().required('Date of birth required'),
-  address: Yup.string().required('Address required'),
-  mobile_no: Yup.string().required('Mobile required'),
-  parent_mobile_no: Yup.string().required('Parent mobile required'),
-});
 
 const facultySchema = Yup.object({
   name: Yup.string().required('Name required'),
@@ -26,8 +16,15 @@ const facultySchema = Yup.object({
   designation: Yup.string().required('Designation required'),
 });
 
+const adminSchema = Yup.object({
+  name: Yup.string().required('Name required'),
+  email: Yup.string().email('Invalid email').required('Email required'),
+  password: Yup.string().min(5, 'Min 5 chars').required('Password required'),
+  secret_key: Yup.string().required('Admin Secret Key required'),
+});
+
 export default function Register() {
-  const [role, setRole] = useState('student');
+  const [role, setRole] = useState('faculty'); // Changed default to 'faculty'
   const [showPw, setShowPw] = useState(false);
   const navigate = useNavigate();
 
@@ -35,14 +32,14 @@ export default function Register() {
     initialValues: {
       name: '', email: '', password: '', dob: '',
       address: '', mobile_no: '', parent_mobile_no: '',
-      department: '', designation: '',
+      department: '', designation: '', secret_key: '',
     },
-    validationSchema: role === 'student' ? studentSchema : facultySchema,
+    validationSchema: role === 'faculty' ? facultySchema : adminSchema,
     enableReinitialize: true,
     onSubmit: async (values, { setSubmitting }) => {
       try {
-        if (role === 'student') await studentApi.signup(values);
-        else await facultyApi.signup(values);
+        if (role === 'faculty') await facultyApi.signup(values);
+        else await adminApi.signup(values);
         toast.success('Account created! Please login.');
         navigate('/login');
       } catch (err) {
@@ -71,7 +68,7 @@ export default function Register() {
         </div>
 
         <div className="flex gap-2 mb-6">
-          {['student', 'faculty'].map(r => (
+          {['faculty', 'admin'].map(r => (
             <button
               key={r}
               type="button"
@@ -109,7 +106,7 @@ export default function Register() {
               {f.touched.password && f.errors.password && <p className="text-xs text-red-500 mt-1">{f.errors.password}</p>}
             </div>
 
-            {role === 'student' && (
+            {/* role === 'student' && (
               <>
                 <div>
                   <label className="label">Date of Birth</label>
@@ -132,7 +129,7 @@ export default function Register() {
                   {f.touched.address && f.errors.address && <p className="text-xs text-red-500 mt-1">{f.errors.address}</p>}
                 </div>
               </>
-            )}
+            ) */}
 
             {role === 'faculty' && (
               <>
@@ -147,6 +144,24 @@ export default function Register() {
                   {f.touched.designation && f.errors.designation && <p className="text-xs text-red-500 mt-1">{f.errors.designation}</p>}
                 </div>
               </>
+            )}
+
+            {role === 'admin' && (
+              <div className="col-span-2">
+                <label className="label">Admin Registration Passcode</label>
+                <input 
+                  name="secret_key" 
+                  type="password" 
+                  className="input-field" 
+                  placeholder="Enter the Admin Secret Passcode to register" 
+                  value={f.values.secret_key} 
+                  onChange={f.handleChange} 
+                  onBlur={f.handleBlur} 
+                />
+                {f.touched.secret_key && f.errors.secret_key && (
+                  <p className="text-xs text-red-500 mt-1">{f.errors.secret_key}</p>
+                )}
+              </div>
             )}
           </div>
 
