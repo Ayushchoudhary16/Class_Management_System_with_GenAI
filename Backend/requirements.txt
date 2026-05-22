@@ -13,6 +13,7 @@ groq
 pwdlib[argon2]
 email-validator
 fastapi-mail
+langchain-groq
 
 
 

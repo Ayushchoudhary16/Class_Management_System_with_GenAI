@@ -48,7 +48,7 @@ async def enroll_student(db: Session, body: EnrollmentCreateSchema):
             emails=[student.email],
             student_name=student.name,
             batch_name=batch.name,
-            class_name=class_data.title,
+            course_name=class_data.title,
             faculty_name=faculty.name,
             faculty_department=faculty.department,
             faculty_designation=faculty.designation,
