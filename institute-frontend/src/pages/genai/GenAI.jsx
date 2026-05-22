@@ -19,7 +19,7 @@ export default function GenAI() {
     {
       id: 1,
       role: 'assistant',
-      content: `Hello! I'm your AI assistant powered by EduCore. I can help you with student management, attendance strategies, class planning, and much more. How can I assist you today?`,
+      content: `Hello! I'm your AI assistant powered by Class Management System. I can help you with student management, attendance strategies, class planning, and much more. How can I assist you today?`,
     },
   ]);
   const [input, setInput] = useState('');
